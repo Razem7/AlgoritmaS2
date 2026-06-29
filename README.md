@@ -1,6 +1,6 @@
-# Kasir Sederhana - Aplikasi Web Kasir (Pure Java)
+# Kasir Sederhana - Aplikasi Web Kasir
 
-Aplikasi kasir sederhana berbasis web menggunakan **Java Spring Boot** (BUKAN PHP!).
+Aplikasi kasir sederhana berbasis web menggunakan **Java Spring Boot** 
 
 ## Fitur
 
@@ -26,7 +26,6 @@ Aplikasi kasir sederhana berbasis web menggunakan **Java Spring Boot** (BUKAN PH
 - **MySQL** (Optional - untuk database persistent)
 - HTML/CSS (Frontend)
 
-## PENTING: INI BUKAN PHP!
 
 **TIDAK PERLU XAMPP** untuk menjalankan aplikasi ini!
 
@@ -49,18 +48,6 @@ Aplikasi kasir sederhana berbasis web menggunakan **Java Spring Boot** (BUKAN PH
 ```bash
 # Cek Java version
 java -version
-
-# Install di macOS
-brew install openjdk@17
-```
-
-2. **Maven 3.6 atau lebih tinggi**
-```bash
-# Cek Maven version
-mvn -version
-
-# Install di macOS
-brew install maven
 ```
 
 ### Langkah-langkah
@@ -163,11 +150,6 @@ Aplikasi sudah dilengkapi dengan data produk dummy:
 
 ## Troubleshooting
 
-### Port 8080 sudah dipakai?
-```bash
-# Ganti port di application.properties
-server.port=8081
-```
 
 ### Error Maven?
 ```bash
