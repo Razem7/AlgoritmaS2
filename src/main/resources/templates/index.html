@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasir Sederhana</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f0fdf4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #166534;
+            margin-bottom: 40px;
+            font-size: 2em;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .nav a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: white;
+            color: #166534;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid #bbf7d0;
+            margin-left: 10px;
+        }
+
+        .nav a:hover {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #14532d;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .products-section, .cart-section {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            border: 1px solid #bbf7d0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #166534;
+            margin-bottom: 24px;
+            font-size: 1.25em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .product-card {
+            border: 1px solid #d1fae5;
+            border-radius: 8px;
+            padding: 18px;
+            transition: all 0.2s;
+            background: #f7fee7;
+        }
+
+        .product-card:hover {
+            border-color: #86efac;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(22, 101, 52, 0.1);
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .product-price {
+            color: #15803d;
+            font-size: 1.15em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .product-stock {
+            color: #6b7280;
+            font-size: 0.85em;
+            margin-bottom: 12px;
+        }
+
+        .product-card form {
+            display: flex;
+            gap: 5px;
+        }
+
+        .product-card input {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            background: white;
+            color: #166534;
+            font-size: 0.9em;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            background: #16a34a;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #15803d;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-success {
+            background: #16a34a;
+            color: white;
+            width: 100%;
+            padding: 14px;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .btn-success:hover {
+            background: #15803d;
+        }
+
+        .cart-items {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px;
+            border-bottom: 1px solid #d1fae5;
+            margin-bottom: 12px;
+            background: #f0fdf4;
+            border-radius: 6px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-details {
+            color: #6b7280;
+            font-size: 0.85em;
+        }
+
+        .cart-total {
+            background: #f0fdf4;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            border: 1px solid #bbf7d0;
+        }
+
+        .total-label {
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #166534;
+            margin-bottom: 8px;
+        }
+
+        .total-amount {
+            font-size: 2em;
+            font-weight: 700;
+            color: #15803d;
+        }
+
+        .checkout-form input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 1em;
+            background: white;
+            color: #166534;
+        }
+
+        .checkout-form input:focus {
+            outline: none;
+            border-color: #16a34a;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #6b7280;
+            padding: 40px;
+            font-size: 0.95em;
+        }
+
+        .error {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>KASIR SEDERHANA</h1>
+
+        <div class="nav">
+            <a href="/products">Manajemen Produk</a>
+            <a href="/report">Laporan Penjualan</a>
+            <a href="/history">Riwayat Transaksi</a>
+        </div>
+
+        <div th:if="${error}" class="error">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="main-content">
+            <!-- Daftar Produk -->
+            <div class="products-section">
+                <h2>Daftar Produk</h2>
+                <div class="products-grid">
+                    <div class="product-card" th:each="product : ${products}">
+                        <div class="product-name" th:text="${product.name}"></div>
+                        <div class="product-price" th:text="'Rp ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></div>
+                        <div class="product-stock" th:text="'Stok: ' + ${product.stock}"></div>
+                        <form action="/add-to-cart" method="post">
+                            <input type="hidden" name="productId" th:value="${product.id}">
+                            <input type="number" name="quantity" value="1" min="1" th:max="${product.stock}">
+                            <button type="submit" class="btn btn-primary">Tambah</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Keranjang -->
+            <div class="cart-section">
+                <h2>Keranjang Belanja</h2>
+                
+                <div th:if="${#lists.isEmpty(cart)}" class="empty-cart">
+                    <p>Keranjang kosong</p>
+                </div>
+
+                <div th:unless="${#lists.isEmpty(cart)}">
+                    <div class="cart-items">
+                        <div class="cart-item" th:each="item : ${cart}">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name" th:text="${item.product.name}"></div>
+                                <div class="cart-item-details">
+                                    <span th:text="${item.quantity} + ' x Rp ' + ${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                    <br>
+                                    <strong th:text="'Rp ' + ${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT')}"></strong>
+                                </div>
+                            </div>
+                            <form action="/remove-from-cart" method="post">
+                                <input type="hidden" name="productId" th:value="${item.product.id}">
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="cart-total">
+                        <div class="total-label">Total:</div>
+                        <div class="total-amount" th:text="'Rp ' + ${#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')}"></div>
+                    </div>
+
+                    <form action="/checkout" method="post" class="checkout-form">
+                        <input type="number" name="payment" placeholder="Jumlah Pembayaran" required step="0.01" min="0">
+                        <button type="submit" class="btn btn-success">Bayar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

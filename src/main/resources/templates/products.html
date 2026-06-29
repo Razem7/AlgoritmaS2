@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Produk</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f0fdf4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #166534;
+            margin-bottom: 40px;
+            font-size: 2em;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .nav a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: white;
+            color: #166534;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid #bbf7d0;
+            margin-left: 10px;
+        }
+
+        .nav a:hover {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #14532d;
+        }
+
+        .products-section {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            border: 1px solid #bbf7d0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #166534;
+            margin-bottom: 24px;
+            font-size: 1.25em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .add-product-form {
+            background: #f0fdf4;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #bbf7d0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .form-grid input {
+            padding: 12px;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            background: white;
+            color: #166534;
+            font-size: 0.9em;
+        }
+
+        .form-grid input:focus {
+            outline: none;
+            border-color: #16a34a;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            background: #16a34a;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #15803d;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .products-table th {
+            background: #f0fdf4;
+            color: #166534;
+            padding: 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85em;
+            border-bottom: 2px solid #bbf7d0;
+        }
+
+        .products-table td {
+            padding: 14px;
+            border-bottom: 1px solid #d1fae5;
+            color: #374151;
+        }
+
+        .products-table tr:hover {
+            background: #f0fdf4;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-buttons button {
+            padding: 6px 12px;
+            font-size: 0.85em;
+        }
+
+        .empty-products {
+            text-align: center;
+            padding: 60px;
+            color: #6b7280;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            .products-table {
+                font-size: 0.85em;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>MANAJEMEN PRODUK</h1>
+
+        <div class="nav">
+            <a href="/">Kembali ke Kasir</a>
+            <a href="/report">Laporan Penjualan</a>
+        </div>
+
+        <div class="products-section">
+            <h2>Tambah Produk Baru</h2>
+            <form action="/products/add" method="post" class="add-product-form">
+                <div class="form-grid">
+                    <input type="text" name="id" placeholder="ID Produk (contoh: P007)" required>
+                    <input type="text" name="name" placeholder="Nama Produk" required>
+                    <input type="number" name="price" placeholder="Harga" min="0" step="0.01" required>
+                    <input type="number" name="stock" placeholder="Stok" min="0" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Tambah Produk</button>
+            </form>
+        </div>
+
+        <div class="products-section">
+            <h2>Daftar Produk</h2>
+
+            <div th:if="${#lists.isEmpty(products)}" class="empty-products">
+                <p>Belum ada produk</p>
+            </div>
+
+            <div th:unless="${#lists.isEmpty(products)}">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Produk</th>
+                            <th>Harga</th>
+                            <th>Stok</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${products}">
+                            <td th:text="${product.id}"></td>
+                            <td th:text="${product.name}"></td>
+                            <td th:text="'Rp ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                            <td th:text="${product.stock}"></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-warning" onclick="editProduct(this)" 
+                                            th:data-id="${product.id}"
+                                            th:data-name="${product.name}"
+                                            th:data-price="${product.price}"
+                                            th:data-stock="${product.stock}">Edit</button>
+                                    <form action="/products/delete" method="post" style="display: inline;">
+                                        <input type="hidden" name="productId" th:value="${product.id}">
+                                        <button type="submit" class="btn btn-danger" 
+                                                onclick="return confirm('Yakin ingin menghapus produk ini?')">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function editProduct(button) {
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            const price = button.getAttribute('data-price');
+            const stock = button.getAttribute('data-stock');
+
+            const newName = prompt('Nama Produk:', name);
+            if (newName === null) return;
+
+            const newPrice = prompt('Harga:', price);
+            if (newPrice === null) return;
+
+            const newStock = prompt('Stok:', stock);
+            if (newStock === null) return;
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/products/update';
+
+            const fields = {
+                id: id,
+                name: newName,
+                price: newPrice,
+                stock: newStock
+            };
+
+            for (const key in fields) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = fields[key];
+                form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+</body>
+</html>
