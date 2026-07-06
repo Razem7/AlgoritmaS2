@@ -51,3 +51,9 @@ spring-boot-devtools.properties
 
 # Application specific
 application-local.properties
+
+# Tutorial book & screenshots
+buku-tutorial.html
+ss*.png
+ss_xampp.png
+ss_phpmyadmin.png

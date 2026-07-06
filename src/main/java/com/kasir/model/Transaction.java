@@ -23,7 +23,7 @@ public class Transaction {
     @Column(nullable = false)
     private double payment;
     
-    @Column(nullable = false)
+    @Column(name = "kembalian", nullable = false)
     private double change;
 
     public Transaction() {
